@@ -37,81 +37,174 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
         :root {
             --accent: #c2703d;
             --accent-soft: #e9c9a8;
+            --accent-deep: #9c5527;
+            --teal: #4f8a76;
             --ink: #3a322c;
+            --muted: #6a5d50;
         }
-        .block-container {padding-top: 1.2rem; padding-bottom: 2.5rem; max-width: 1320px;}
+        html, body, [class*="css"] {font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;}
+        .block-container {padding-top: 1.2rem; padding-bottom: 3rem; max-width: 1320px;}
+        #MainMenu, footer {visibility: hidden;}
 
         /* ---------- HERO ---------- */
         .hero {
             position: relative;
-            padding: 1.8rem 2rem;
-            border-radius: 24px;
+            padding: 2.2rem 2.4rem;
+            border-radius: 26px;
             background: linear-gradient(125deg, #f6ecd9 0%, #efe2d4 38%, #dceae6 100%);
-            box-shadow: 0 18px 40px -24px rgba(120, 80, 40, .55);
+            box-shadow: 0 22px 48px -26px rgba(120, 80, 40, .55);
             overflow: hidden;
-            margin-bottom: 1.4rem;
+            margin-bottom: 1.6rem;
+            border: 1px solid rgba(255,255,255,.6);
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+            background-size: 26px 26px;
+            opacity: .25;
+            pointer-events: none;
         }
         .hero::after {
             content: "";
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(420px 220px at 88% -20%, rgba(194,112,61,.20), transparent 60%),
-                radial-gradient(360px 240px at 8% 130%, rgba(80,140,120,.18), transparent 60%);
+                radial-gradient(460px 240px at 90% -25%, rgba(194,112,61,.25), transparent 60%),
+                radial-gradient(380px 260px at 4% 130%, rgba(79,138,118,.22), transparent 60%);
             pointer-events: none;
         }
-        .hero h1 {margin: 0; font-size: 2.3rem; letter-spacing: -.5px; color: #2c241d;}
-        .hero p {margin: .5rem 0 0 0; color: #6a5d50; font-size: 1.02rem; max-width: 60ch;}
-        .badge-row {margin-top: 1rem;}
-        .badge {
-            display: inline-block;
-            margin: .25rem .4rem 0 0;
-            padding: .28rem .8rem;
+        .hero-eyebrow {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .76rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--accent-deep);
+            background: rgba(255,255,255,.65);
+            border: 1px solid rgba(194,112,61,.3);
             border-radius: 999px;
-            background: rgba(255,255,255,.72);
-            border: 1px solid rgba(194,112,61,.25);
+            padding: .3rem .75rem;
+            margin-bottom: .9rem;
+        }
+        .hero h1 {
+            position: relative;
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -.6px;
+            color: #2c241d;
+        }
+        .hero p {position: relative; margin: .6rem 0 0 0; color: var(--muted); font-size: 1.04rem; max-width: 62ch; line-height: 1.55;}
+        .badge-row {position: relative; margin-top: 1.1rem; display: flex; flex-wrap: wrap; gap: .45rem;}
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            padding: .32rem .85rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,.75);
+            border: 1px solid rgba(194,112,61,.28);
             font-size: .82rem;
             font-weight: 600;
             color: #6a4a30;
             backdrop-filter: blur(6px);
+            transition: transform .15s ease, box-shadow .15s ease;
         }
+        .badge:hover {transform: translateY(-2px); box-shadow: 0 8px 16px -10px rgba(120,80,40,.5);}
 
         /* ---------- MODEL CARD ---------- */
         .card {
+            position: relative;
             height: 100%;
-            padding: 1.15rem 1.2rem;
+            padding: 1.25rem 1.3rem;
             border-radius: 18px;
-            border: 1px solid rgba(150,120,90,.22);
-            background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(250,245,238,.6));
+            border: 1px solid rgba(150,120,90,.20);
+            border-left: 4px solid var(--accent);
+            background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,245,238,.7));
             box-shadow: 0 10px 26px -22px rgba(90,60,30,.6);
+            transition: transform .18s ease, box-shadow .18s ease;
         }
-        .card h4 {margin: 0 0 .25rem 0; font-size: 1.05rem; color: #2c241d;}
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 34px -22px rgba(90,60,30,.75);
+        }
+        .card h4 {margin: 0 0 .3rem 0; font-size: 1.06rem; color: #2c241d; display: flex; align-items: center; gap: .4rem;}
         .card .mono {
             font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
             font-size: .76rem;
             color: var(--accent);
             background: rgba(194,112,61,.10);
-            padding: .12rem .4rem;
+            padding: .14rem .45rem;
             border-radius: 6px;
             display: inline-block;
-            margin-bottom: .55rem;
+            margin-bottom: .6rem;
+            word-break: break-all;
         }
-        .card p {margin: .35rem 0 0 0; font-size: .88rem; color: #6a5d50; line-height: 1.45;}
+        .card p {margin: .35rem 0 0 0; font-size: .88rem; color: var(--muted); line-height: 1.5;}
 
         /* ---------- SECTION TITLE ---------- */
         .sect {
-            font-size: 1.18rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #2c241d;
-            margin: .2rem 0 .8rem 0;
+            margin: .2rem 0 .9rem 0;
+            padding-left: .65rem;
+            border-left: 3px solid var(--accent);
         }
         .sect span {color: var(--accent);}
 
-        /* tabs */
-        button[data-baseweb="tab"] {font-size: .96rem; font-weight: 600;}
+        /* ---------- TABS ---------- */
+        button[data-baseweb="tab"] {
+            font-size: .96rem;
+            font-weight: 600;
+            padding: .5rem 1rem;
+        }
+        button[data-baseweb="tab"][aria-selected="true"] {color: var(--accent-deep);}
+        div[data-baseweb="tab-highlight"] {background-color: var(--accent) !important; height: 3px; border-radius: 3px;}
+
+        /* ---------- BUTTONS ---------- */
+        button[kind="primary"], .stDownloadButton button {
+            border-radius: 12px !important;
+            background: linear-gradient(125deg, var(--accent) 0%, var(--accent-deep) 100%) !important;
+            border: none !important;
+            box-shadow: 0 10px 22px -14px rgba(156,85,39,.7);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        button[kind="primary"]:hover, .stDownloadButton button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 26px -14px rgba(156,85,39,.85);
+        }
+
+        /* ---------- METRICS / ALERTS / CONTAINERS ---------- */
+        div[data-testid="stMetric"] {
+            background: rgba(255,255,255,.6);
+            border: 1px solid rgba(150,120,90,.18);
+            border-radius: 14px;
+            padding: .6rem .9rem;
+        }
+        div[data-testid="stExpander"], div[data-testid="stDataFrame"] {
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .stAlert {border-radius: 12px;}
+
+        /* ---------- SIDEBAR ---------- */
+        section[data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #fbf6ee 0%, #f3ece1 100%);
+            border-right: 1px solid rgba(150,120,90,.18);
+        }
     </style>
     """,
     unsafe_allow_html=True,
@@ -126,50 +219,55 @@ MODELS = {
         "family": "sd15",
         "vae": "stabilityai/sd-vae-ft-mse",
         "controlnet": "lllyasviel/sd-controlnet-canny",
-        "notebook": "chonnhancode-backup.ipynb",
+        "notebook": "training_notebook/chonnhan.ipynb",
         "lora_hint": "weight/chonnhan_realistic.safetensors",
         "keywords": ["realistic", "vision", "cn", "chonnhan"],
         "note": "Backbone noVAE nên phải nạp VAE ngoài stabilityai/sd-vae-ft-mse.",
+        "icon": "🖼️",
     },
     "Dreamlike Diffusion + LoRA": {
         "base_model": "dreamlike-art/dreamlike-diffusion-1.0",
         "family": "sd15",
         "vae": None,
         "controlnet": "lllyasviel/sd-controlnet-canny",
-        "notebook": "phan-nhat-code.ipynb",
-        "lora_hint": "weight/phannhat_dreamlike.safetensors",
+        "notebook": "training_notebook/pnhat.ipynb",
+        "lora_hint": "weight/pnhat_dreamlike.safetensors",
         "keywords": ["dreamlike", "pnhat", "phan", "nhat"],
         "note": "Dùng pipeline Stable Diffusion v1.x với ControlNet Canny.",
+        "icon": "💭",
     },
     "SDXL Base 1.0 + LoRA": {
         "base_model": "stabilityai/stable-diffusion-xl-base-1.0",
         "family": "sdxl",
         "vae": "madebyollin/sdxl-vae-fp16-fix",
         "controlnet": "diffusers/controlnet-canny-sdxl-1.0",
-        "notebook": "dnguyen-backup.ipynb",
-        "lora_hint": "weight/ducnguyen_sdxl.safetensors",
-        "keywords": ["sdxl", "dn", "dnguyen"],
+        "notebook": "training_notebook/ducnguyen.ipynb",
+        "lora_hint": "weight/ducnguyen_SDXL.safetensors",
+        "keywords": ["sdxl", "dn", "ducnguyen"],
         "note": "SDXL phải dùng StableDiffusionXLControlNetPipeline và SDXL ControlNet riêng.",
+        "icon": "🚀",
     },
     "Stable Diffusion v1.5 + LoRA": {
         "base_model": "runwayml/stable-diffusion-v1-5",
         "family": "sd15",
         "vae": "stabilityai/sd-vae-ft-mse",
         "controlnet": "lllyasviel/sd-controlnet-canny",
-        "notebook": "trongnhan-backup.ipynb",
-        "lora_hint": "weight/trongnhan_sdv15.safetensors",
-        "keywords": ["sdv1.5", "sdv15", "trongnhan"],
+        "notebook": "training_notebook/nhantran-code.ipynb",
+        "lora_hint": "weight/nhantran_sdv15.safetensors",
+        "keywords": ["sdv1.5", "sdv15", "nhantran"],
         "note": "Backbone SD v1.5 với LoRA custom.",
+        "icon": "🎞️",
     },
     "Ghibli + LoRA": {
         "base_model": "nitrosocke/Ghibli-Diffusion",
         "family": "sd15",
         "vae": None,
         "controlnet": "lllyasviel/sd-controlnet-canny",
-        "notebook": "dinhlong-backup.ipynb",
-        "lora_hint": "weight/dinhlong_ghibli.safetensors",
+        "notebook": "training_notebook/DInhLong.ipynb",
+        "lora_hint": "weight/dinhlong_Ghibli.safetensors",
         "keywords": ["ghibli", "dinhlong", "dinh", "long"],
         "note": "Ghibli style diffusion model với LoRA custom.",
+        "icon": "🍃",
     },
 }
 
@@ -443,16 +541,17 @@ status = runtime_status()
 st.markdown(
     """
     <div class="hero">
+        <div class="hero-eyebrow">✨ LoRA fine-tuning studio</div>
         <h1>🎨 Impressionism LoRA Studio</h1>
         <p>Trình bày kết quả huấn luyện và so sánh trực tiếp <b>Base</b> với <b>LoRA fine-tuned</b>
         qua ControlNet Canny — weight được gắn tự động cho từng model.</p>
         <div class="badge-row">
-            <span class="badge">Realistic Vision</span>
-            <span class="badge">Dreamlike</span>
-            <span class="badge">SDXL</span>
-            <span class="badge">SD v1.5</span>
-            <span class="badge">Ghibli</span>
-            <span class="badge">LoRA + ControlNet</span>
+            <span class="badge">🖼️ Realistic Vision</span>
+            <span class="badge">💭 Dreamlike</span>
+            <span class="badge">🚀 SDXL</span>
+            <span class="badge">🎞️ SD v1.5</span>
+            <span class="badge">🍃 Ghibli</span>
+            <span class="badge">🧬 LoRA + ControlNet</span>
         </div>
     </div>
     """,
@@ -476,6 +575,9 @@ with st.sidebar:
         gc.collect()
         st.success("Đã xóa cache.")
 
+    st.divider()
+    st.caption("🎨 Impressionism LoRA Studio")
+
 overview_tab, results_tab, inference_tab, config_tab = st.tabs(
     ["🏠 Tổng quan", "📊 Kết quả huấn luyện", "🖼️ Demo inference", "🧩 Cấu hình model"]
 )
@@ -494,7 +596,7 @@ with overview_tab:
                 st.markdown(
                     f"""
                     <div class="card">
-                        <h4>{model_name}</h4>
+                        <h4><span>{config['icon']}</span> {model_name}</h4>
                         <span class="mono">{config['base_model']}</span>
                         <p><b>Notebook:</b> {config['notebook']}</p>
                         <p>{config['note']}</p>
@@ -756,7 +858,7 @@ with config_tab:
     for name, config in MODELS.items():
         registry_rows.append(
             {
-                "Model": name,
+                "Model": f"{config['icon']} {name}",
                 "Base model": config["base_model"],
                 "VAE": config["vae"] or "Mặc định",
                 "ControlNet": config["controlnet"],
